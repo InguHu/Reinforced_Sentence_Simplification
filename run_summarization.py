@@ -305,4 +305,5 @@ def main(unused_argv):
     raise ValueError("The 'mode' flag must be one of train/eval/decode")
 
 if __name__ == '__main__':
+  print "testing ..........."
   tf.app.run()
