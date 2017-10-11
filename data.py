@@ -105,24 +105,18 @@ def example_generator(data_path, single_pass):
   Yields:
     Deserialized tf.Example.
   """
+  
+  assert data_path, ('Error: Empty filelist at %s' % data_path) # check filelist isn't empty
+  reader = open(data_path, 'r')
+  lines = reader.readlines()
+  lines = [line.strip() for line in lines]
+  src_tgt_pairs = [(line.split('|||')[0], line.split('|||')[1]) for line in lines]
+  random.shuffle(lines) 
+  data_num = len(src_tgt_pairs) 
+
   while True:
-    filelist = glob.glob(data_path) # get the list of datafiles
-    assert filelist, ('Error: Empty filelist at %s' % data_path) # check filelist isn't empty
-    if single_pass:
-      filelist = sorted(filelist)
-    else:
-      random.shuffle(filelist)
-    for f in filelist:
-      reader = open(f, 'rb')
-      while True:
-        len_bytes = reader.read(8)
-        if not len_bytes: break # finished reading this file
-        str_len = struct.unpack('q', len_bytes)[0]
-        example_str = struct.unpack('%ds' % str_len, reader.read(str_len))[0]
-        yield example_pb2.Example.FromString(example_str)
-    if single_pass:
-      print "example_generator completed reading all datafiles. No more data."
-      break
+    rid = random.randint(0,data_num)
+    yield src_tgt_pairs[rid]
 
 
 def article2ids(article_words, vocab):
