@@ -13,7 +13,8 @@ class Example(object):
   """Class representing a train/val/test example for text summarization."""
 
   def __init__(self, article, abstract_sentences, vocab, hps):
-    """Initializes the Example, performing tokenization and truncation to produce the encoder, decoder and target sequences, which are stored in self.
+    """Initializes the Example, performing tokenization and truncation to produce the encoder, 
+    decoder and target sequences, which are stored in self.
 
     Args:
       article: source text; a string. each token is separated by a single space.
@@ -179,7 +180,10 @@ class Batch(object):
       ex.pad_decoder_inp_targ(hps.max_dec_steps, self.pad_id)
 
     # Initialize the numpy arrays.
-    # Note: our decoder inputs and targets must be the same length for each batch (second dimension = max_dec_steps) because we do not use a dynamic_rnn for decoding. However I believe this is possible, or will soon be possible, with Tensorflow 1.0, in which case it may be best to upgrade to that.
+    # Note: our decoder inputs and targets must be the same length for each batch (second dimension = max_dec_steps)
+    # because we do not use a dynamic_rnn for decoding. 
+    # However I believe this is possible, or will soon be possible, with Tensorflow 1.0, in which case it may be best to upgrade to that.
+    
     self.dec_batch = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.int32)
     self.target_batch = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.int32)
     self.dec_padding_mask = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.float32)
@@ -349,6 +353,10 @@ class Batcher(object):
       try:
         article_text = e.features.feature['article'].bytes_list.value[0] # the article text was saved under the key 'article' in the data files
         abstract_text = e.features.feature['abstract'].bytes_list.value[0] # the abstract text was saved under the key 'abstract' in the data files
+        print "article_text______________________"
+        print article_text
+        print "abstract_text---------------------"
+        print abstract_text
       except ValueError:
         tf.logging.error('Failed to get article or abstract from example')
         continue
