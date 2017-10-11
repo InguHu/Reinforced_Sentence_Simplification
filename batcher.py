@@ -353,9 +353,9 @@ class Batcher(object):
       try:
         article_text = e.features.feature['article'].bytes_list.value[0] # the article text was saved under the key 'article' in the data files
         abstract_text = e.features.feature['abstract'].bytes_list.value[0] # the abstract text was saved under the key 'abstract' in the data files
-        print "article_text______________________"
+        print "article_text______________________\n"
         print article_text
-        print "abstract_text---------------------"
+        print "abstract_text---------------------\n"
         print abstract_text
       except ValueError:
         tf.logging.error('Failed to get article or abstract from example')
